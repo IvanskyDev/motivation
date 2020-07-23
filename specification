@@ -1,0 +1,32 @@
+[nVersion][txins][txouts][nLockTime]
+[nVersion][marker][flag][txins][txouts][witness][nLockTime]
+1-byte - OP_RETURN (0x6a)
+   1-byte - Push the following 36 bytes (0x24)
+   4-byte - Commitment header (0xaa21a9ed)
+  32-byte - Commitment hash: Double-SHA256(witness root hash|witness reserved value)
+  
+  39th byte onwards: Optional data with no consensus meaning
+  witness:      <signature> <pubkey>
+    scriptSig:    (empty)
+    scriptPubKey: 0 <20-byte-key-hash>
+                  (0x0014{20-byte-key-hash})
+                  <signature> <pubkey> CHECKSIG
+                  witness:      <signature> <pubkey>
+    scriptSig:    <0 <20-byte-key-hash>>
+                  (0x160014{20-byte-key-hash})
+    scriptPubKey: HASH160 <20-byte-script-hash> EQUAL
+                  (0xA914{20-byte-script-hash}87)
+                  0 <20-byte-key-hash>
+                  witness:      0 <signature1> <1 <pubkey1> <pubkey2> 2 CHECKMULTISIG>
+    scriptSig:    (empty)
+    scriptPubKey: 0 <32-byte-hash>
+                  (0x0020{32-byte-hash})
+                  1 <pubkey1> <pubkey2> 2 CHECKMULTISIG
+                  0 <signature1> 1 <pubkey1> <pubkey2> 2 CHECKMULTISIG
+                  witness:      0 <signature1> <1 <pubkey1> <pubkey2> 2 CHECKMULTISIG>
+    scriptSig:    <0 <32-byte-hash>>
+                  (0x220020{32-byte-hash})
+    scriptPubKey: HASH160 <20-byte-hash> EQUAL
+                  (0xA914{20-byte-hash}87)
+                  0 <32-byte-hash>
+                  Double-SHA256(Witness root hash|Hash(new commitment|witness reserved value))
